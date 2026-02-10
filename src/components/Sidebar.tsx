@@ -1,16 +1,49 @@
 "use client";
 import React, { useState } from 'react';
-import { auth } from '@/lib/firebase';
-import { signOut } from 'firebase/auth';
+import { auth, googleProvider } from '@/lib/firebase';
+import { signOut, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 
 export default function Sidebar({ onSelectUser }: { onSelectUser: (user: any) => void }) {
   const router = useRouter();
-  const [profilePic, setProfilePic] = useState("/default-avatar.png"); // डिफ़ॉल्ट फोटो
+  const [profilePic, setProfilePic] = useState("/default-avatar.png");
+  const [contacts, setContacts] = useState<any[]>([]); // कॉन्टैक्ट्स सेव करने के लिए
+  const [loading, setLoading] = useState(false);
 
-  // यह फंक्शन बाद में Gmail API से जुड़कर नंबर लाएगा
-  const handleSyncGmail = () => {
-    alert("Gmail API Connecting... (Contacts will appear here)");
+  const handleSyncGmail = async () => {
+    setLoading(true);
+    try {
+      // 1. Google से परमिशन माँगेगा
+      const result = await signInWithPopup(auth, googleProvider);
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const token = credential?.accessToken;
+
+      if (!token) return;
+
+      // 2. Google People API से कॉन्टैक्ट्स लाएगा
+      const response = await fetch('https://people.googleapis.com/v1/people/me/connections?personFields=names,phoneNumbers', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const data = await response.json();
+
+      // 3. डेटा को सही फॉर्मेट में बदलेगा
+      if (data.connections) {
+        const formattedContacts = data.connections.map((person: any, index: number) => ({
+          id: index,
+          name: person.names?.[0]?.displayName || "Unknown",
+          phone: person.phoneNumbers?.[0]?.value || "No Number",
+          avatar: person.photos?.[0]?.url || ""
+        }));
+        setContacts(formattedContacts); // लिस्ट अपडेट हो जाएगी
+      } else {
+        alert("कोई कॉन्टैक्ट नहीं मिला!");
+      }
+
+    } catch (error) {
+      console.error("Sync Error:", error);
+      alert("Sync फेल हो गया! क्या आपने Google Console में People API इनेबल की है?");
+    }
+    setLoading(false);
   };
 
   const handleLogout = async () => {
@@ -18,69 +51,56 @@ export default function Sidebar({ onSelectUser }: { onSelectUser: (user: any) =>
     router.push("/login");
   };
 
-  // प्रोफाइल फोटो बदलने का लॉजिक
-  const handleImageChange = (e: any) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setProfilePic(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
   return (
     <div className="w-full md:w-1/3 bg-white dark:bg-[#111b21] border-r border-gray-700 flex flex-col h-screen">
-      {/* Header: My Profile */}
+      {/* Header */}
       <div className="p-4 bg-[#202c33] flex justify-between items-center text-gray-300">
         <div className="flex items-center gap-3">
-          <label htmlFor="profile-upload" className="cursor-pointer hover:opacity-80 relative group">
-             {/* यहाँ आपकी फोटो दिखेगी */}
-            <img src={profilePic} alt="Profile" className="w-10 h-10 rounded-full object-cover border-2 border-metaGreen" />
-            <div className="absolute inset-0 bg-black bg-opacity-50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 text-xs text-white">Edit</div>
-          </label>
-          <input id="profile-upload" type="file" className="hidden" onChange={handleImageChange} accept="image/*" />
+          <div className="w-10 h-10 rounded-full bg-metaGreen flex items-center justify-center text-white font-bold">
+            AR
+          </div>
           <span className="font-bold text-white">Ayush Raj</span>
         </div>
         <button onClick={handleLogout} className="text-sm text-red-400 hover:text-red-300">Logout</button>
       </div>
 
-      {/* Sync Buttons */}
+      {/* Sync Button */}
       <div className="p-2 bg-[#111b21]">
         <button 
           onClick={handleSyncGmail}
-          className="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white rounded text-sm flex items-center justify-center gap-2 mb-2"
+          disabled={loading}
+          className="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white rounded text-sm flex items-center justify-center gap-2 mb-2 transition-all"
         >
-          <span>📧</span> Sync Gmail Contacts
+          {loading ? (
+            <span>🔄 Syncing...</span>
+          ) : (
+            <>
+              <span>📧</span> Sync Gmail Contacts
+            </>
+          )}
         </button>
       </div>
 
-      {/* Search Bar */}
-      <div className="p-2 bg-[#111b21]">
-        <input 
-          type="text" 
-          placeholder="Search or start new chat" 
-          className="w-full bg-[#202c33] text-white text-sm rounded-lg px-4 py-2 outline-none focus:ring-1 focus:ring-metaGreen"
-        />
-      </div>
-
-      {/* Contact List (Gmail वाले नंबर यहाँ आएँगे) */}
+      {/* Contact List */}
       <div className="flex-1 overflow-y-auto bg-[#111b21]">
-        {/* अभी के लिए डमी डेटा, बाद में API से भरेगा */}
-        {[1, 2, 3].map((i) => (
-          <div key={i} onClick={() => onSelectUser({ name: `Contact ${i}`, id: i })} className="flex items-center gap-3 p-3 hover:bg-[#202c33] cursor-pointer border-b border-gray-800">
-            <div className="w-10 h-10 rounded-full bg-gray-600 flex items-center justify-center text-white">
-              {i}
-            </div>
-            <div className="text-white">
-              <h4 className="text-sm font-semibold">Gmail Contact {i}</h4>
-              <p className="text-xs text-gray-400">Hey there! I am using WhatsApp.</p>
-            </div>
+        {contacts.length === 0 ? (
+          <div className="text-center text-gray-500 mt-10 text-sm">
+            अभी कोई कॉन्टैक्ट नहीं है.<br/>'Sync Gmail Contacts' बटन दबाएं.
           </div>
-        ))}
+        ) : (
+          contacts.map((contact) => (
+            <div key={contact.id} onClick={() => onSelectUser(contact)} className="flex items-center gap-3 p-3 hover:bg-[#202c33] cursor-pointer border-b border-gray-800">
+              <div className="w-10 h-10 rounded-full bg-gray-600 flex items-center justify-center text-white text-xs overflow-hidden">
+                 {contact.name[0]}
+              </div>
+              <div className="text-white">
+                <h4 className="text-sm font-semibold">{contact.name}</h4>
+                <p className="text-xs text-gray-400">{contact.phone}</p>
+              </div>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );
 }
-
