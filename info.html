@@ -3,119 +3,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ayush Hub - Project Documentation</title>
+    <title>Ayush Hub - Professional Documentation</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; }
+        body { font-family: 'Inter', sans-serif; background-color: white; color: #1a202c; }
         
-        /* Print Settings to keep colors accurate */
+        /* प्रिंटिंग के लिए खास सेटिंग */
         @media print {
-            body { -webkit-print-color-adjust: exact; }
-            .no-print { display: none; }
-            pre { white-space: pre-wrap; word-wrap: break-word; }
+            body { margin: 0; padding: 0; }
+            .page-break { page-break-before: always; } /* हर टॉपिक नए पेज से */
+            .no-print { display: none; } /* बटन प्रिंट में नहीं आएगा */
+            pre { white-space: pre-wrap; word-wrap: break-word; border: 1px solid #e2e8f0; }
         }
 
-        /* Custom Scrollbar for code blocks */
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: #1f2937; }
-        ::-webkit-scrollbar-thumb { background: #374151; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #4b5563; }
+        /* कोड ब्लॉक की स्टाइल */
+        .code-block {
+            background-color: #f7fafc;
+            border: 1px solid #cbd5e0;
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: #2d3748;
+            overflow-x: hidden;
+        }
+        
+        .section-title {
+            color: #047857; /* Dark Green */
+            border-bottom: 2px solid #3b82f6; /* Blue Border */
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
     </style>
 </head>
-<body class="bg-slate-900 text-gray-200 p-8">
+<body class="p-8 max-w-5xl mx-auto">
 
-    <div class="max-w-4xl mx-auto mb-10 text-center border-b border-gray-700 pb-8">
-        <h1 class="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500 mb-2">
-            Ayush Hub Project
-        </h1>
-        <p class="text-gray-400">Complete Source Code & Architecture Documentation</p>
-        <p class="text-sm text-gray-500 mt-2">Developed by Ayush Raj | Technology: Next.js + Firebase + Meta APIs</p>
-        
-        <button onclick="window.print()" class="no-print mt-6 px-6 py-2 bg-green-600 hover:bg-blue-600 text-white font-bold rounded-lg transition-all shadow-lg flex items-center gap-2 mx-auto">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-            Download PDF / Print
+    <div class="text-center mb-10 no-print">
+        <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-all flex items-center gap-2 mx-auto">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+            Save as PDF Now
         </button>
+        <p class="text-gray-500 mt-2 text-sm">Note: Select 'Save as PDF' in destination.</p>
     </div>
 
-    <div class="max-w-4xl mx-auto space-y-12">
+    <div class="flex flex-col items-center justify-center h-[90vh] text-center border-4 border-double border-gray-200 p-10 rounded-xl">
+        <div class="w-24 h-24 bg-gradient-to-r from-green-500 to-blue-500 rounded-full flex items-center justify-center text-white text-4xl font-bold mb-6 shadow-xl">
+            AR
+        </div>
+        <h1 class="text-5xl font-extrabold text-gray-900 mb-4">AYUSH HUB</h1>
+        <h2 class="text-2xl text-blue-600 font-semibold mb-8">Unified Communication Dashboard</h2>
+        
+        <div class="text-left bg-gray-50 p-6 rounded-lg border border-gray-200 w-full max-w-lg">
+            <p class="mb-2"><strong>👨‍💻 Developer:</strong> Ayush Raj</p>
+            <p class="mb-2"><strong>🏫 Project:</strong> Class 10th Computer Project</p>
+            <p class="mb-2"><strong>📅 Date:</strong> February 2026</p>
+            <p><strong>🛠 Tech Stack:</strong> Next.js 14, Firebase, Tailwind CSS, Meta API</p>
+        </div>
+    </div>
 
-        <section class="bg-slate-800 p-6 rounded-xl border-l-4 border-green-500 shadow-xl">
-            <h2 class="text-2xl font-bold text-white mb-4">🚀 प्रोजेक्ट का उद्देश्य (Why we built this?)</h2>
-            <p class="text-gray-300 leading-relaxed">
-                यह प्रोजेक्ट <strong>"Ayush Hub"</strong> एक यूनिफाइड कम्युनिकेशन डैशबोर्ड है। इसका मुख्य उद्देश्य है:
-            </p>
-            <ul class="list-disc list-inside mt-3 space-y-2 text-gray-300">
-                <li><span class="text-green-400 font-bold">WhatsApp, Telegram और Gmail</span> को एक ही स्क्रीन से कंट्रोल करना।</li>
-                <li>मोबाइल को बार-बार छुए बिना लैपटॉप/पीसी से मैसेज और ईमेल भेजना।</li>
-                <li><strong>Next.js App Router</strong> की पावर का उपयोग करके एक तेज और सुरक्षित वेब ऐप बनाना।</li>
-                <li><strong>API Integration:</strong> Meta Graph API, Telegram Bot API, और Google Gmail API का लाइव उपयोग।</li>
-            </ul>
-        </section>
+    <div class="page-break">
+        <h2 class="text-3xl font-bold section-title">1. प्रोजेक्ट का परिचय (Project Overview)</h2>
+        
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+            <strong>Ayush Hub</strong> एक एडवांस वेब एप्लीकेशन है जिसे कम्युनिकेशन को आसान बनाने के लिए बनाया गया है। 
+            यह एक "Central Command Center" की तरह काम करता है जहाँ से यूजर दुनिया के तीन सबसे बड़े मैसेजिंग प्लेटफॉर्म्स को कंट्रोल कर सकता है।
+        </p>
 
-        <section class="bg-slate-800 p-6 rounded-xl border-l-4 border-blue-500 shadow-xl">
-            <h2 class="text-2xl font-bold text-white mb-4">📂 फाइल स्ट्रक्चर (File Map)</h2>
-            <pre class="bg-black p-4 rounded-lg text-green-300 text-sm font-mono overflow-x-auto">
-Ayush-Hub/
-├── .env.local                  (Secret Keys - इसे कभी GitHub पर न डालें)
-├── .gitignore                  (GitHub सुरक्षा के लिए)
-├── next.config.js              (Next.js सेटिंग्स)
-├── tailwind.config.ts          (डिजाइन और कलर्स)
-├── package.json                (लाइब्रेरी लिस्ट)
+        <h3 class="text-xl font-bold text-gray-800 mt-6 mb-3">🔥 मुख्य फीचर्स (Key Features):</h3>
+        <ul class="list-disc pl-6 space-y-3 text-gray-700">
+            <li>
+                <strong>WhatsApp Integration:</strong> बिना मोबाइल छुए वेबसाइट से वॉट्सऐप मैसेज भेजना।
+            </li>
+            <li>
+                <strong>Telegram Bot Control:</strong> अपने कस्टम Telegram Bot के जरिए नोटिफिकेशन और मैसेज भेजना।
+            </li>
+            <li>
+                <strong>Gmail Management:</strong> Google People API से कॉन्टैक्ट्स सिंक करना और ईमेल भेजना।
+            </li>
+            <li>
+                <strong>Secure Login:</strong> सिर्फ ऑथोराइज्ड यूजर (Ayush Raj) ही इसे एक्सेस कर सकता है (Firebase Auth)।
+            </li>
+            <li>
+                <strong>Responsive Design:</strong> यह मोबाइल और लैपटॉप दोनों पर शानदार दिखता है (Meta Green & Blue Theme)।
+            </li>
+        </ul>
+    </div>
+
+    <div class="page-break">
+        <h2 class="text-3xl font-bold section-title">2. फाइल स्ट्रक्चर (Folder Structure)</h2>
+        <p class="text-gray-600 mb-4">नीचे प्रोजेक्ट की सभी फाइलों का नक्शा दिया गया है।</p>
+        
+        <div class="code-block bg-gray-50 border-l-4 border-green-500">
+<pre>
+AYUSH-HUB/
+│
+├── .env.local                  (🔐 सीक्रेट चाबी - यहाँ Passwords रहते हैं)
+├── .gitignore                  (🛡️ सुरक्षा - GitHub पर पासवर्ड जाने से रोकता है)
 │
 ├── src/
 │   ├── app/
-│   │   ├── layout.tsx          (ऐप का मुख्य ढांचा और डार्क मोड)
-│   │   ├── page.tsx            (मेन डैशबोर्ड - जो सबको जोड़ता है)
-│   │   ├── globals.css         (ग्लोबल स्टाइलिंग)
+│   │   ├── page.tsx            (🏠 मेन डैशबोर्ड - सारा कंट्रोल यहाँ है)
+│   │   ├── layout.tsx          (🎨 डिजाइन का ढांचा)
+│   │   ├── globals.css         (🖌️ कलर्स और स्टाइल)
 │   │   │
 │   │   ├── login/
-│   │   │   └── page.tsx        (लॉगिन स्क्रीन - सिक्योरिटी गेट)
+│   │   │   └── page.tsx        (🔑 लॉगिन गेट - दरवाजा)
 │   │   │
-│   │   └── api/                (Backend Routes - डाकिया)
+│   │   └── api/                (⚙️ इंजन - Backend)
 │   │       ├── whatsapp/route.ts
 │   │       ├── telegram/route.ts
 │   │       └── gmail/route.ts
 │   │
-│   ├── components/             (UI के हिस्से)
-│   │   ├── Sidebar.tsx         (लेफ्ट साइड - कॉन्टैक्ट्स और बटन्स)
-│   │   ├── ChatWindow.tsx      (राइट साइड - मैसेजिंग एरिया)
-│   │   └── ui/Button.tsx       (लोडिंग वाला स्पेशल बटन)
+│   ├── components/             (🧩 ऐप के हिस्से)
+│   │   ├── Sidebar.tsx         (👈 लेफ्ट साइड - कॉन्टैक्ट लिस्ट)
+│   │   └── ChatWindow.tsx      (👉 राइट साइड - चैट बॉक्स)
 │   │
 │   └── lib/
-│       └── firebase.ts         (डेटाबेस और Google Auth कनेक्शन)
+│       └── firebase.ts         (🔥 डेटाबेस कनेक्शन)
 </pre>
-        </section>
+        </div>
+    </div>
 
-        <div class="space-y-8">
-            <h2 class="text-3xl font-bold text-center text-white border-b border-gray-700 pb-4">💻 Source Code (सारा कोड यहाँ है)</h2>
+    <div class="page-break">
+        <h2 class="text-3xl font-bold section-title">3. कॉन्फ़िगरेशन (Environment Variables)</h2>
+        <p class="mb-4 text-red-600 font-bold">⚠️ चेतावनी: यह फाइल कभी भी पब्लिक शेयर न करें। इसे सिर्फ Vercel Settings में डालें।</p>
+        
+        <div class="code-block">
+            <div class="text-xs font-bold text-gray-500 mb-2">Filename: .env.local</div>
+<pre>
+# Firebase Keys (Database)
+NEXT_PUBLIC_FIREBASE_API_KEY=AIzaSy...
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=ayush-chat.firebaseapp.com
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=ayush-chat
 
-            <div class="bg-slate-900 border border-gray-700 rounded-lg overflow-hidden">
-                <div class="bg-gray-800 px-4 py-2 text-sm font-mono text-blue-300 flex justify-between">
-                    <span>.env.local (Security Keys)</span>
-                    <span class="text-red-400 font-bold">DO NOT UPLOAD TO GITHUB</span>
-                </div>
-                <pre class="p-4 text-gray-300 text-sm overflow-x-auto"><code># Firebase Keys
-NEXT_PUBLIC_FIREBASE_API_KEY=your_key_here
-NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
-NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
+# WhatsApp API Keys
+WHATSAPP_TOKEN=EAAG...
+WHATSAPP_PHONE_ID=1092...
 
-# WhatsApp Keys
-WHATSAPP_TOKEN=your_meta_token
-WHATSAPP_PHONE_ID=your_phone_id
+# Telegram API Keys
+TELEGRAM_BOT_TOKEN=8260054295:AAHHylWwcd51isAw2sledTWDZAwCmX7QBqw
 
-# Telegram Keys
-TELEGRAM_BOT_TOKEN=your_bot_token
+# Admin Security
+ADMIN_EMAIL=ayushrajayushhh@gmail.com
+</pre>
+        </div>
+    </div>
 
-# Admin
-ADMIN_EMAIL=ayushrajayushhh@gmail.com</code></pre>
-            </div>
-
-            <div class="bg-slate-900 border border-gray-700 rounded-lg overflow-hidden">
-                <div class="bg-gray-800 px-4 py-2 text-sm font-mono text-green-300">
-                    src/app/page.tsx (Main Dashboard & Connector)
-                </div>
-                <pre class="p-4 text-gray-300 text-sm overflow-x-auto"><code>"use client";
+    <div class="page-break">
+        <h2 class="text-3xl font-bold section-title">4. मेन डैशबोर्ड कोड (Main Page)</h2>
+        <p class="mb-4 text-gray-700">यह फाइल (Parent) साइडबार से टोकन लेती है और चैट विंडो को देती है।</p>
+        
+        <div class="code-block">
+            <div class="text-xs font-bold text-blue-600 mb-2">src/app/page.tsx</div>
+<pre>
+"use client";
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -126,6 +168,8 @@ import ChatWindow from '@/components/ChatWindow';
 export default function HomePage() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState&lt;any&gt;(null);
+  
+  // Data Flow States
   const [selectedChat, setSelectedChat] = useState&lt;any&gt;(null);
   const [gmailToken, setGmailToken] = useState&lt;string | null&gt;(null);
 
@@ -143,7 +187,7 @@ export default function HomePage() {
     return () => unsubscribe();
   }, [router]);
 
-  if (loading) return &lt;div className="h-screen bg-[#111b21] flex items-center justify-center text-green-500"&gt;Loading...&lt;/div&gt;;
+  if (loading) return &lt;div&gt;Loading...&lt;/div&gt;;
 
   if (!user) return null; 
 
@@ -159,18 +203,22 @@ export default function HomePage() {
       /&gt;
     &lt;/div&gt;
   );
-}</code></pre>
-            </div>
+}
+</pre>
+        </div>
+    </div>
 
-            <div class="bg-slate-900 border border-gray-700 rounded-lg overflow-hidden">
-                <div class="bg-gray-800 px-4 py-2 text-sm font-mono text-green-300">
-                    src/components/Sidebar.tsx (Contacts & Login)
-                </div>
-                <pre class="p-4 text-gray-300 text-sm overflow-x-auto"><code>"use client";
+    <div class="page-break">
+        <h2 class="text-3xl font-bold section-title">5. साइडबार कोड (Contacts Logic)</h2>
+        <p class="mb-4 text-gray-700">यह कॉन्टैक्ट्स लाता है और यूजर को WhatsApp, Telegram या Email चुनने देता है।</p>
+        
+        <div class="code-block">
+            <div class="text-xs font-bold text-blue-600 mb-2">src/components/Sidebar.tsx</div>
+<pre>
+"use client";
 import React, { useState } from 'react';
 import { auth, googleProvider } from '@/lib/firebase';
 import { signOut, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-import { useRouter } from 'next/navigation';
 
 interface SidebarProps {
   onSelectUser: (user: any) => void;
@@ -178,190 +226,96 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ onSelectUser, onTokenReceived }: SidebarProps) {
-  const router = useRouter();
   const [contacts, setContacts] = useState&lt;any[]&gt;([]); 
-  const [loading, setLoading] = useState(false);
 
   const handleSyncGmail = async () => {
-    setLoading(true);
     try {
       const result = await signInWithPopup(auth, googleProvider);
       const credential = GoogleAuthProvider.credentialFromResult(result);
       const token = credential?.accessToken;
 
-      if (!token) return;
-      onTokenReceived(token); // Send token to parent
-
-      const response = await fetch('https://people.googleapis.com/v1/people/me/connections?personFields=names,phoneNumbers', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      const data = await response.json();
-
-      if (data.connections) {
-        const formattedContacts = data.connections.map((person: any, index: number) => ({
-          id: index,
-          name: person.names?.[0]?.displayName || "Unknown",
-          phone: person.phoneNumbers?.[0]?.value || "No Number",
-          avatar: person.photos?.[0]?.url || "",
-          platform: "whatsapp"
-        }));
-        setContacts(formattedContacts); 
-      } else {
-        alert("कोई कॉन्टैक्ट नहीं मिला!");
+      if (token) {
+        onTokenReceived(token); // Pass token up
+        // ... Fetch Google Contacts Logic ...
       }
     } catch (error) {
-      console.error("Sync Error:", error);
-      alert("Sync Failed!");
+      alert("Login Failed");
     }
-    setLoading(false);
-  };
-
-  const handleLogout = async () => {
-    await signOut(auth);
-    router.push("/login");
   };
 
   return (
-    &lt;div className="w-full md:w-1/3 bg-white dark:bg-[#111b21] border-r border-gray-700 flex flex-col h-screen"&gt;
-      {/* Header */}
-      &lt;div className="p-4 bg-[#202c33] flex justify-between items-center text-gray-300"&gt;
-        &lt;div className="flex items-center gap-3"&gt;
-          &lt;div className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center text-white font-bold"&gt;AR&lt;/div&gt;
-          &lt;span className="font-bold text-white"&gt;Ayush Raj&lt;/span&gt;
-        &lt;/div&gt;
-        &lt;button onClick={handleLogout} className="text-sm text-red-400"&gt;Logout&lt;/button&gt;
+    &lt;div className="w-full md:w-1/3 bg-white dark:bg-[#111b21] border-r"&gt;
+      {/* Buttons for Testing */}
+      &lt;div onClick={() => onSelectUser({ platform: "telegram", chatId: "8070018390", name: "My Telegram" })}&gt;
+        Telegram Test
       &lt;/div&gt;
-
-      {/* Sync Button */}
-      &lt;div className="p-2 bg-[#111b21]"&gt;
-        &lt;button onClick={handleSyncGmail} disabled={loading} className="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white rounded text-sm flex justify-center gap-2"&gt;
-          {loading ? "Syncing..." : "📧 Sync Gmail Contacts"}
-        &lt;/button&gt;
+      
+      &lt;div onClick={() => onSelectUser({ platform: "email", email: "ayushrajayushhh@gmail.com", name: "My Email" })}&gt;
+        Email Test
       &lt;/div&gt;
-
-      {/* List */}
-      &lt;div className="flex-1 overflow-y-auto bg-[#111b21]"&gt;
-        
-        {/* Telegram Button */}
-        &lt;div onClick={() => onSelectUser({ id: 'tg', name: "Ayush (Telegram)", platform: "telegram", chatId: "8070018390" })} className="flex items-center gap-3 p-3 hover:bg-[#202c33] cursor-pointer border-b border-gray-800 bg-blue-900/10"&gt;
-          &lt;div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs"&gt;TG&lt;/div&gt;
-          &lt;div&gt;&lt;h4 className="text-sm text-white font-bold"&gt;Telegram Bot&lt;/h4&gt;&lt;/div&gt;
-        &lt;/div&gt;
-
-        {/* Email Test Button */}
-        &lt;div onClick={() => onSelectUser({ id: 'email', name: "Test Email", platform: "email", email: "ayushrajayushhh@gmail.com" })} className="flex items-center gap-3 p-3 hover:bg-[#202c33] cursor-pointer border-b border-gray-800 bg-red-900/10"&gt;
-          &lt;div className="w-10 h-10 rounded-full bg-red-500 flex items-center justify-center text-white text-xs"&gt;@&lt;/div&gt;
-          &lt;div&gt;&lt;h4 className="text-sm text-white font-bold"&gt;Test Email&lt;/h4&gt;&lt;/div&gt;
-        &lt;/div&gt;
-
-        {contacts.map((contact) => (
-          &lt;div key={contact.id} onClick={() => onSelectUser(contact)} className="flex items-center gap-3 p-3 hover:bg-[#202c33] cursor-pointer border-b border-gray-800"&gt;
-             &lt;div className="w-10 h-10 rounded-full bg-gray-600 flex items-center justify-center text-white text-xs"&gt;{contact.name[0]}&lt;/div&gt;
-             &lt;div className="text-white"&gt;&lt;h4 className="text-sm font-semibold"&gt;{contact.name}&lt;/h4&gt;&lt;p className="text-xs text-gray-400"&gt;{contact.phone}&lt;/p&gt;&lt;/div&gt;
-          &lt;/div&gt;
-        ))}
-      &lt;/div&gt;
+      
+      &lt;button onClick={handleSyncGmail}&gt;Sync Contacts&lt;/button&gt;
     &lt;/div&gt;
   );
-}</code></pre>
-            </div>
-
-            <div class="bg-slate-900 border border-gray-700 rounded-lg overflow-hidden">
-                <div class="bg-gray-800 px-4 py-2 text-sm font-mono text-green-300">
-                    src/components/ChatWindow.tsx (Logic for WA, TG, Gmail)
-                </div>
-                <pre class="p-4 text-gray-300 text-sm overflow-x-auto"><code>"use client";
-import React, { useState, useEffect } from 'react';
-
-interface ChatWindowProps {
-  selectedUser: any;
-  gmailToken: string | null;
 }
+</pre>
+        </div>
+    </div>
 
-export default function ChatWindow({ selectedUser, gmailToken }: ChatWindowProps) {
-  const [messages, setMessages] = useState&lt;any[]&gt;([]);
+    <div class="page-break">
+        <h2 class="text-3xl font-bold section-title">6. चैट विंडो कोड (Sending Logic)</h2>
+        <p class="mb-4 text-gray-700">यह तय करता है कि मैसेज किस API (WhatsApp/Telegram/Gmail) को भेजा जाए।</p>
+        
+        <div class="code-block">
+            <div class="text-xs font-bold text-blue-600 mb-2">src/components/ChatWindow.tsx</div>
+<pre>
+"use client";
+import React, { useState } from 'react';
+
+export default function ChatWindow({ selectedUser, gmailToken }: any) {
   const [newMessage, setNewMessage] = useState("");
-  const [sending, setSending] = useState(false);
 
   const handleSend = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newMessage.trim() || !selectedUser) return;
+    
+    let endpoint = '';
+    let bodyData = {};
 
-    setMessages((prev) => [...prev, { id: Date.now(), text: newMessage, sender: "me", time: "Just now", status: 'sending' }]);
-    const msgToSend = newMessage;
-    setNewMessage(""); 
-    setSending(true);
-
-    try {
-      let endpoint = '';
-      let bodyData = {};
-
-      if (selectedUser.platform === 'telegram') {
-        endpoint = '/api/telegram';
-        bodyData = { chatId: selectedUser.chatId, message: msgToSend };
-      } 
-      else if (selectedUser.platform === 'email') {
-        if (!gmailToken) throw new Error("No Email Token");
-        endpoint = '/api/gmail';
-        bodyData = { token: gmailToken, to: selectedUser.email, message: msgToSend };
-      }
-      else {
-        endpoint = '/api/whatsapp';
-        bodyData = { phone: selectedUser.phone, message: msgToSend };
-      }
-
-      const res = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(bodyData)
-      });
-      const data = await res.json();
-      if (!data.success) throw new Error(data.error);
-
-    } catch (error) {
-      alert("Message Failed!");
-    } finally {
-      setSending(false);
+    // 1. Platform Detection
+    if (selectedUser.platform === 'telegram') {
+      endpoint = '/api/telegram';
+      bodyData = { chatId: selectedUser.chatId, message: newMessage };
+    } 
+    else if (selectedUser.platform === 'email') {
+      endpoint = '/api/gmail';
+      bodyData = { token: gmailToken, to: selectedUser.email, message: newMessage };
     }
+    else {
+      endpoint = '/api/whatsapp';
+      bodyData = { phone: selectedUser.phone, message: newMessage };
+    }
+
+    // 2. Send Request
+    await fetch(endpoint, {
+      method: 'POST',
+      body: JSON.stringify(bodyData)
+    });
+    
+    setNewMessage("");
   };
 
-  if (!selectedUser) return &lt;div className="flex-1 bg-[#222e35]"&gt;&lt;/div&gt;;
-
   return (
-    &lt;div className="flex-1 flex flex-col h-screen bg-[#0b141a]"&gt;
-       {/* Header */}
-      &lt;div className="p-3 bg-[#202c33] flex items-center gap-4 border-l border-gray-700"&gt;
-        &lt;span className="text-white font-bold"&gt;{selectedUser.name}&lt;/span&gt;
-        &lt;span className="text-[10px] px-1 rounded text-white bg-green-600"&gt;{selectedUser.platform}&lt;/span&gt;
-      &lt;/div&gt;
-
-      {/* Chat Area */}
-      &lt;div className="flex-1 overflow-y-auto p-4 space-y-2 bg-[url('/bg-chat-tile-dark.png')]"&gt;
-        {messages.map((msg) => (
-          &lt;div key={msg.id} className={`flex justify-end`}&gt;
-            &lt;div className="bg-[#005c4b] p-2 rounded-lg text-sm text-white"&gt;{msg.text}&lt;/div&gt;
-          &lt;/div&gt;
-        ))}
-      &lt;/div&gt;
-
-      {/* Input */}
-      &lt;form onSubmit={handleSend} className="p-3 bg-[#202c33] flex items-center gap-2"&gt;
-        &lt;input type="text" value={newMessage} onChange={(e) => setNewMessage(e.target.value)} className="flex-1 bg-[#2a3942] text-white rounded-lg px-4 py-2" placeholder="Type..." /&gt;
-        &lt;button type="submit" disabled={sending} className="text-green-500"&gt;➤&lt;/button&gt;
+    &lt;div className="flex-1 bg-[#0b141a]"&gt;
+      &lt;form onSubmit={handleSend}&gt;
+        &lt;input value={newMessage} onChange={(e) => setNewMessage(e.target.value)} /&gt;
+        &lt;button&gt;Send&lt;/button&gt;
       &lt;/form&gt;
     &lt;/div&gt;
   );
-}</code></pre>
-            </div>
-
+}
+</pre>
         </div>
-
-        <div className="mt-12 pt-8 border-t border-gray-700 text-center text-gray-500 text-sm">
-            <p>Generated by Gemini for <strong>Ayush Raj</strong> | Success Point Hub Projects</p>
-            <p className="mt-1">Date: 10 Feb 2026</p>
-        </div>
-
     </div>
+
 </body>
 </html>
-
