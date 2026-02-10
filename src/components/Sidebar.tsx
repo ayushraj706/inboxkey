@@ -4,9 +4,14 @@ import { auth, googleProvider } from '@/lib/firebase';
 import { signOut, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 
-export default function Sidebar({ onSelectUser }: { onSelectUser: (user: any) => void }) {
+// यहाँ हमने बताया कि Sidebar को दो काम करने हैं: यूजर चुनना और टोकन भेजना
+interface SidebarProps {
+  onSelectUser: (user: any) => void;
+  onTokenReceived: (token: string) => void;
+}
+
+export default function Sidebar({ onSelectUser, onTokenReceived }: SidebarProps) {
   const router = useRouter();
-  const [profilePic, setProfilePic] = useState("/default-avatar.png");
   const [contacts, setContacts] = useState<any[]>([]); 
   const [loading, setLoading] = useState(false);
 
@@ -19,6 +24,9 @@ export default function Sidebar({ onSelectUser }: { onSelectUser: (user: any) =>
 
       if (!token) return;
 
+      // 🔥 यह नई लाइन है: टोकन मिलते ही उसे 'पापा' (page.tsx) को दे दो
+      onTokenReceived(token);
+
       const response = await fetch('https://people.googleapis.com/v1/people/me/connections?personFields=names,phoneNumbers', {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -30,7 +38,7 @@ export default function Sidebar({ onSelectUser }: { onSelectUser: (user: any) =>
           name: person.names?.[0]?.displayName || "Unknown",
           phone: person.phoneNumbers?.[0]?.value || "No Number",
           avatar: person.photos?.[0]?.url || "",
-          platform: "whatsapp" // Gmail कॉन्टैक्ट्स का मैसेज WhatsApp पर जाएगा
+          platform: "whatsapp" // Gmail वाले कॉन्टैक्ट्स WhatsApp पर
         }));
         setContacts(formattedContacts); 
       } else {
@@ -76,20 +84,18 @@ export default function Sidebar({ onSelectUser }: { onSelectUser: (user: any) =>
       {/* Contact List */}
       <div className="flex-1 overflow-y-auto bg-[#111b21]">
         
-        {/* 🔥 Telegram Test Button (Updated with your ID) */}
+        {/* Telegram Test Button */}
         <div 
           onClick={() => onSelectUser({ 
             id: 'tg-bot', 
             name: "Ayush (Telegram)", 
             phone: "My Telegram Chat", 
-            platform: "telegram", // यह बता रहा है कि यह टेलीग्राम है
-            chatId: "8070018390" // आपका ID यहाँ सेट कर दिया है
+            platform: "telegram",
+            chatId: "8070018390" // आपका ID
           })} 
           className="flex items-center gap-3 p-3 hover:bg-[#202c33] cursor-pointer border-b border-gray-800 bg-blue-900/10"
         >
-          <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold text-xs">
-            TG
-          </div>
+          <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold text-xs">TG</div>
           <div className="text-white">
             <h4 className="text-sm font-semibold">Telegram Test</h4>
             <p className="text-xs text-blue-300">Click to test Bot</p>
