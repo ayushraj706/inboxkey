@@ -30,7 +30,7 @@ export default function Sidebar({ onSelectUser }: { onSelectUser: (user: any) =>
           name: person.names?.[0]?.displayName || "Unknown",
           phone: person.phoneNumbers?.[0]?.value || "No Number",
           avatar: person.photos?.[0]?.url || "",
-          platform: "whatsapp" // Gmail कॉन्टैक्ट्स डिफ़ॉल्ट रूप से WhatsApp पर जाएंगे
+          platform: "whatsapp" // Gmail कॉन्टैक्ट्स का मैसेज WhatsApp पर जाएगा
         }));
         setContacts(formattedContacts); 
       } else {
@@ -76,16 +76,14 @@ export default function Sidebar({ onSelectUser }: { onSelectUser: (user: any) =>
       {/* Contact List */}
       <div className="flex-1 overflow-y-auto bg-[#111b21]">
         
-        {/* 🔥 NEW: Telegram Test Button */}
+        {/* 🔥 Telegram Test Button (Updated with your ID) */}
         <div 
           onClick={() => onSelectUser({ 
             id: 'tg-bot', 
-            name: "AyushHub Bot", 
-            phone: "Telegram Bot", 
-            platform: "telegram",
-            // टेस्टिंग के लिए अपना खुद का Telegram Chat ID यहाँ डालें, वरना मैसेज नहीं आएगा
-            // अपना Chat ID जानने के लिए Telegram पर @userinfobot को /start भेजें
-            chatId: "YOUR_TELEGRAM_CHAT_ID" 
+            name: "Ayush (Telegram)", 
+            phone: "My Telegram Chat", 
+            platform: "telegram", // यह बता रहा है कि यह टेलीग्राम है
+            chatId: "8070018390" // आपका ID यहाँ सेट कर दिया है
           })} 
           className="flex items-center gap-3 p-3 hover:bg-[#202c33] cursor-pointer border-b border-gray-800 bg-blue-900/10"
         >
@@ -93,8 +91,8 @@ export default function Sidebar({ onSelectUser }: { onSelectUser: (user: any) =>
             TG
           </div>
           <div className="text-white">
-            <h4 className="text-sm font-semibold">Telegram Bot Test</h4>
-            <p className="text-xs text-blue-300">Click to send msg via Bot</p>
+            <h4 className="text-sm font-semibold">Telegram Test</h4>
+            <p className="text-xs text-blue-300">Click to test Bot</p>
           </div>
         </div>
 
