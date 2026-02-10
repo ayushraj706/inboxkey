@@ -1,11 +1,17 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // अगर undici का एरर आए तो यह लाइन उसे शांत कर देगी
-  transpilePackages: ['undici', 'firebase'],
+  // यह लाइन उस undici वाले एरर को ठीक करेगी
+  transpilePackages: ['undici', 'firebase', '@firebase/auth'],
+  
+  // अगर फ्यूचर में इमेज का एरर आए तो यह काम आएगा
   images: {
-    domains: ['lh3.googleusercontent.com'], // Google Profile Pic के लिए
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+      },
+    ],
   },
 };
 
 module.exports = nextConfig;
-
