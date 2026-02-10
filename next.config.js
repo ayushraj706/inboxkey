@@ -1,19 +1,17 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // 1. ESLint (Code checking) की गलतियों को इग्नोर करो
+  // 1. ये लाइन उस 'undici' वाले एरर को ठीक करेगी (Transpilation)
+  transpilePackages: ['undici', 'firebase', '@firebase/auth', '@firebase/component', '@firebase/util'],
+
+  // 2. TypeScript और ESLint के एरर को इग्नोर करो
+  typescript: {
+    ignoreBuildErrors: true,
+  },
   eslint: {
     ignoreDuringBuilds: true,
   },
 
-  // 2. TypeScript की गलतियों (Type errors) को इग्नोर करो
-  typescript: {
-    ignoreBuildErrors: true,
-  },
-
-  // 3. वो 'undici' और 'firebase' वाला बड़ा एरर ठीक करने के लिए
-  transpilePackages: ['undici', 'firebase', '@firebase/auth'],
-
-  // 4. Google की फोटो दिखने के लिए परमिशन
+  // 3. Google Images के लिए
   images: {
     remotePatterns: [
       {
