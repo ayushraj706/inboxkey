@@ -1,20 +1,22 @@
 import type { Metadata } from "next";
-import "./globals.css";
+import { Inter } from "next/font/google";
+import "./globals.css"; // 👈 यह लाइन सबसे जरुरी है
+
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Ayush Hub - Success Point",
-  description: "Advanced Management System by Ayush Raj",
+  title: "Ayush Hub",
+  description: "Secure Inbox",
 };
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
-    <html lang="hi" className="dark"> {/* डिफ़ॉल्ट रूप से डार्क मोड */}
-      <body>{children}</body>
+    <html lang="en">
+      <body className={inter.className}>{children}</body>
     </html>
   );
 }
-
