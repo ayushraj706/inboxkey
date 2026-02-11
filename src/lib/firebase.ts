@@ -2,21 +2,22 @@ import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
+// 👇 सीधा चाबियां यहाँ लिख दीं (No Env Variables needed now)
 const firebaseConfig = {
-  // अपनी Firebase Config यहाँ पेस्ट करें (जो आपने पहले Console से ली थी)
-  apiKey: "AIzaSyD...", 
-  authDomain: "ayush-chat.firebaseapp.com",
-  projectId: "ayush-chat",
-  storageBucket: "ayush-chat.appspot.com",
-  messagingSenderId: "YOUR_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyCCqWVSgULjZtgfOqVX3CBmOonxkr2UB7g",
+  authDomain: "whatsapp-950a8.firebaseapp.com",
+  projectId: "whatsapp-950a8",
+  storageBucket: "whatsapp-950a8.firebasestorage.app",
+  messagingSenderId: "526342181957",
+  appId: "1:526342181957:web:0e71810f3ccbb297413f2c",
+  measurementId: "G-M0336296QN"
 };
 
+// अगर ऐप पहले से नहीं बना है, तभी नया बनाओ (Error से बचने के लिए)
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 
-export const auth = getAuth(app);
-export const db = getFirestore(app);
+const auth = getAuth(app);
+const googleProvider = new GoogleAuthProvider();
+const db = getFirestore(app);
 
-// यह नई लाइन है - Google Contacts के लिए
-export const googleProvider = new GoogleAuthProvider();
-googleProvider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+export { auth, googleProvider, db };
