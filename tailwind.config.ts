@@ -6,17 +6,14 @@ const config: Config = {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
-  darkMode: 'class', // डार्क मोड इनेबल करने के लिए
   theme: {
     extend: {
       colors: {
-        metaGreen: "#25D366", // Meta/WhatsApp Green
-        metaBlue: "#0084FF",  // Meta Blue
-        darkBg: "#0B141A",    // WhatsApp Dark Background
+        background: "var(--background)",
+        foreground: "var(--foreground)",
       },
     },
   },
   plugins: [],
 };
 export default config;
-
