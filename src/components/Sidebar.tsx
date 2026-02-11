@@ -1,126 +1,143 @@
 "use client";
-import React, { useState } from 'react';
-import { auth, googleProvider } from '@/lib/firebase';
-import { signOut, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-import { useRouter } from 'next/navigation';
+import { useState } from "react";
+import GmailConnectModal from "./GmailConnectModal";
 
-// यहाँ हमने बताया कि Sidebar को दो काम करने हैं: यूजर चुनना और टोकन भेजना
-interface SidebarProps {
-  onSelectUser: (user: any) => void;
-  onTokenReceived: (token: string) => void;
-}
+export default function Sidebar({ onSelectChat }: any) {
+  const [activeTab, setActiveTab] = useState("whatsapp"); // whatsapp, telegram, gmail
+  const [showGmailModal, setShowGmailModal] = useState(false);
+  const [gmailToken, setGmailToken] = useState<string | null>(null);
 
-export default function Sidebar({ onSelectUser, onTokenReceived }: SidebarProps) {
-  const router = useRouter();
-  const [contacts, setContacts] = useState<any[]>([]); 
-  const [loading, setLoading] = useState(false);
+  // Fake Contacts for Demo
+  const chats = [
+    { id: 1, name: "Rahul (WhatsApp)", msg: "Bhai code bhej de", type: "whatsapp" },
+    { id: 2, name: "Telegram Bot", msg: "/start command working?", type: "telegram" },
+  ];
 
-  const handleSyncGmail = async () => {
-    setLoading(true);
-    try {
-      const result = await signInWithPopup(auth, googleProvider);
-      const credential = GoogleAuthProvider.credentialFromResult(result);
-      const token = credential?.accessToken;
+  // Gmail Folders (Ye API se aayenge baad me, abhi dummy hain)
+  const gmailFolders = [
+    { name: "Inbox", count: 4 },
+    { name: "Starred", count: 0 },
+    { name: "Sent", count: 12 },
+    { name: "Spam", count: 1 },
+    { name: "Trash", count: 0 },
+  ];
 
-      if (!token) return;
-
-      // 🔥 यह नई लाइन है: टोकन मिलते ही उसे 'पापा' (page.tsx) को दे दो
-      onTokenReceived(token);
-
-      const response = await fetch('https://people.googleapis.com/v1/people/me/connections?personFields=names,phoneNumbers', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      const data = await response.json();
-
-      if (data.connections) {
-        const formattedContacts = data.connections.map((person: any, index: number) => ({
-          id: index,
-          name: person.names?.[0]?.displayName || "Unknown",
-          phone: person.phoneNumbers?.[0]?.value || "No Number",
-          avatar: person.photos?.[0]?.url || "",
-          platform: "whatsapp" // Gmail वाले कॉन्टैक्ट्स WhatsApp पर
-        }));
-        setContacts(formattedContacts); 
-      } else {
-        alert("कोई कॉन्टैक्ट नहीं मिला!");
-      }
-
-    } catch (error) {
-      console.error("Sync Error:", error);
-      alert("Sync फेल हो गया! क्या Google People API इनेबल है?");
-    }
-    setLoading(false);
-  };
-
-  const handleLogout = async () => {
-    await signOut(auth);
-    router.push("/login");
+  // Jab Gmail Connect ho jaye
+  const handleGmailConnected = (user: any, token: string) => {
+    setGmailToken(token);
+    setShowGmailModal(false); // Modal band karo
+    setActiveTab("gmail");    // Gmail tab par le jao
   };
 
   return (
-    <div className="w-full md:w-1/3 bg-white dark:bg-[#111b21] border-r border-gray-700 flex flex-col h-screen">
-      {/* Header */}
-      <div className="p-4 bg-[#202c33] flex justify-between items-center text-gray-300">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-metaGreen flex items-center justify-center text-white font-bold">
-            AR
-          </div>
-          <span className="font-bold text-white">Ayush Raj</span>
-        </div>
-        <button onClick={handleLogout} className="text-sm text-red-400 hover:text-red-300">Logout</button>
-      </div>
-
-      {/* Sync Button */}
-      <div className="p-2 bg-[#111b21]">
-        <button 
-          onClick={handleSyncGmail}
-          disabled={loading}
-          className="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white rounded text-sm flex items-center justify-center gap-2 mb-2 transition-all"
-        >
-          {loading ? <span>🔄 Syncing...</span> : <span>📧 Sync Gmail Contacts</span>}
-        </button>
-      </div>
-
-      {/* Contact List */}
-      <div className="flex-1 overflow-y-auto bg-[#111b21]">
+    <div className="flex h-full border-r border-[#2a3942]">
+      
+      {/* 1. THIN ICON BAR (Left Side) */}
+      <div className="w-16 bg-[#202c33] flex flex-col items-center py-4 gap-6 border-r border-[#2a3942]">
         
-        {/* Telegram Test Button */}
-        <div 
-          onClick={() => onSelectUser({ 
-            id: 'tg-bot', 
-            name: "Ayush (Telegram)", 
-            phone: "My Telegram Chat", 
-            platform: "telegram",
-            chatId: "8070018390" // आपका ID
-          })} 
-          className="flex items-center gap-3 p-3 hover:bg-[#202c33] cursor-pointer border-b border-gray-800 bg-blue-900/10"
+        {/* WhatsApp Icon */}
+        <button 
+          onClick={() => setActiveTab("whatsapp")}
+          className={`p-3 rounded-xl transition ${activeTab === "whatsapp" ? "bg-[#2a3942]" : "hover:bg-[#2a3942]"}`}
         >
-          <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold text-xs">TG</div>
-          <div className="text-white">
-            <h4 className="text-sm font-semibold">Telegram Test</h4>
-            <p className="text-xs text-blue-300">Click to test Bot</p>
-          </div>
+          <span className="text-2xl">🟢</span>
+        </button>
+
+        {/* Telegram Icon */}
+        <button 
+          onClick={() => setActiveTab("telegram")}
+          className={`p-3 rounded-xl transition ${activeTab === "telegram" ? "bg-[#2a3942]" : "hover:bg-[#2a3942]"}`}
+        >
+          <span className="text-2xl">🔵</span>
+        </button>
+
+        {/* Gmail Icon (Red) */}
+        <button 
+          onClick={() => {
+            // Agar token nahi hai to connect karo, varna tab kholo
+            if (!gmailToken) setShowGmailModal(true);
+            else setActiveTab("gmail");
+          }}
+          className={`p-3 rounded-xl transition ${activeTab === "gmail" ? "bg-[#2a3942]" : "hover:bg-[#2a3942]"}`}
+        >
+          <span className="text-2xl">🔴</span>
+        </button>
+
+      </div>
+
+      {/* 2. LIST AREA (Right Side) */}
+      <div className="w-80 bg-[#111b21] flex flex-col">
+        
+        {/* Header */}
+        <div className="h-16 bg-[#202c33] flex items-center px-4 border-b border-[#2a3942]">
+          <h1 className="text-[#e9edef] text-xl font-bold">
+            {activeTab === "whatsapp" && "WhatsApp"}
+            {activeTab === "telegram" && "Telegram"}
+            {activeTab === "gmail" && "Gmail Inbox"}
+          </h1>
         </div>
 
-        {/* Gmail Contacts */}
-        {contacts.length === 0 && (
-          <div className="text-center text-gray-500 mt-4 text-xs">
-            Gmail contacts will appear here
-          </div>
-        )}
+        {/* Content List */}
+        <div className="flex-1 overflow-y-auto">
+          
+          {/* A. Agar Gmail Tab hai */}
+          {activeTab === "gmail" && (
+            <div>
+              {!gmailToken ? (
+                <div className="p-5 text-center text-gray-400 mt-10">
+                  <p className="mb-4">Gmail is not connected.</p>
+                  <button 
+                    onClick={() => setShowGmailModal(true)}
+                    className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-full font-bold"
+                  >
+                    Connect Gmail
+                  </button>
+                </div>
+              ) : (
+                // Folder List (Jaisa screenshot me tha)
+                <div className="p-2">
+                  {gmailFolders.map((folder) => (
+                    <div key={folder.name} className="flex justify-between p-3 hover:bg-[#202c33] cursor-pointer rounded-lg text-[#e9edef]">
+                      <span>📁 {folder.name}</span>
+                      {folder.count > 0 && <span className="text-xs bg-gray-700 px-2 py-1 rounded-full">{folder.count}</span>}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
 
-        {contacts.map((contact) => (
-          <div key={contact.id} onClick={() => onSelectUser(contact)} className="flex items-center gap-3 p-3 hover:bg-[#202c33] cursor-pointer border-b border-gray-800">
-            <div className="w-10 h-10 rounded-full bg-gray-600 flex items-center justify-center text-white text-xs overflow-hidden">
-               {contact.name[0]}
-            </div>
-            <div className="text-white">
-              <h4 className="text-sm font-semibold">{contact.name}</h4>
-              <p className="text-xs text-gray-400">{contact.phone}</p>
-            </div>
-          </div>
-        ))}
+          {/* B. Agar WhatsApp/Telegram Tab hai */}
+          {activeTab !== "gmail" && (
+            chats
+              .filter(c => c.type === activeTab)
+              .map((chat) => (
+                <div 
+                  key={chat.id} 
+                  onClick={() => onSelectChat(chat)}
+                  className="p-3 border-b border-[#2a3942] hover:bg-[#202c33] cursor-pointer flex gap-3 items-center"
+                >
+                  <div className="w-10 h-10 rounded-full bg-gray-600 flex items-center justify-center text-white font-bold">
+                    {chat.name[0]}
+                  </div>
+                  <div>
+                    <h3 className="text-[#e9edef] font-medium">{chat.name}</h3>
+                    <p className="text-gray-400 text-sm truncate">{chat.msg}</p>
+                  </div>
+                </div>
+            ))
+          )}
+        </div>
       </div>
+
+      {/* 3. MODAL (Ye tab dikhega jab showGmailModal true hoga) */}
+      {showGmailModal && (
+        <GmailConnectModal 
+          onClose={() => setShowGmailModal(false)}
+          onConnected={handleGmailConnected}
+        />
+      )}
+
     </div>
   );
 }
